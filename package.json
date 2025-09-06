@@ -1,0 +1,31 @@
+{
+  "name": "qtools",
+  "version": "1.0.0",
+  "description": "浏览器端工具：Cookie 抓取、网络请求拦截、数据导出",
+  "main": "src/core.js",
+  "scripts": {
+    "build": "echo 'Build process not yet implemented'",
+    "test": "echo 'Tests not yet implemented'",
+    "dev": "echo 'Development server not yet implemented'"
+  },
+  "keywords": [
+    "cookie",
+    "network",
+    "debugging",
+    "userscript",
+    "chrome-extension",
+    "developer-tools"
+  ],
+  "author": "actele",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/actele/QTools"
+  },
+  "bugs": {
+    "url": "https://github.com/actele/QTools/issues"
+  },
+  "homepage": "https://github.com/actele/QTools#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}

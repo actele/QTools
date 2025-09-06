@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QTools v2.3.0</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      width: 400px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+    
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header .subtitle {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+    }
+    
+    .status-card {
+      background: rgba(247, 250, 252, 0.8);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(203, 213, 224, 0.3);
+    }
+    
+    .status-title {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    
+    .status-indicator.active {
+      background: #22c55e;
+    }
+    
+    .status-text {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .stat-item {
+      background: rgba(247, 250, 252, 0.5);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid rgba(203, 213, 224, 0.3);
+    }
+    
+    .stat-number {
+      font-size: 18px;
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 4px;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: #666;
+    }
+    
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #5a6fd8;
+    }
+    
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+      background: #cbd5e0;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    
+    .toggle-group {
+      display: flex;
+      gap: 4px;
+    }
+    
+    .toggle-group .btn {
+      flex: 1;
+      font-size: 11px;
+      padding: 8px 12px;
+    }
+    
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(203, 213, 224, 0.2);
+    }
+    
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+    
+    .setting-label {
+      font-size: 12px;
+      color: #4a5568;
+    }
+    
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      accent-color: #667eea;
+    }
+    
+    .footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    
+    .loading.show {
+      display: block;
+    }
+    
+    .error {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      margin-bottom: 12px;
+      border: 1px solid #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🍪 QTools</h1>
+    <div class="subtitle">网络请求与 Cookie 抓取工具</div>
+  </div>
+  
+  <div class="content">
+    <div id="error-message" class="error" style="display: none;"></div>
+    
+    <div class="status-card">
+      <div class="status-title">
+        <span class="status-indicator" id="status-indicator"></span>
+        抓取状态
+      </div>
+      <div class="status-text" id="status-text">正在检查状态...</div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" id="request-count">0</div>
+        <div class="stat-label">网络请求</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="cookie-count">0</div>
+        <div class="stat-label">Cookie 数量</div>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <div class="toggle-group">
+        <button class="btn btn-primary" id="toggle-capture">启用抓取</button>
+        <button class="btn btn-secondary" id="clear-data">清空数据</button>
+      </div>
+      
+      <button class="btn btn-secondary" id="export-requests">导出请求数据</button>
+      <button class="btn btn-secondary" id="export-cookies">导出 Cookie</button>
+      <button class="btn btn-secondary" id="export-har">导出 HAR</button>
+      
+      <div style="margin-top: 8px;">
+        <div class="setting-item">
+          <label class="setting-label" for="setting-same">仅同源请求</label>
+          <input type="checkbox" class="checkbox" id="setting-same">
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" for="setting-all">抓取所有请求</label>
+          <input type="checkbox" class="checkbox" id="setting-all">
+        </div>
+      </div>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div>正在加载数据...</div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    v2.3.0 | 基于油猴脚本架构 | 支持双模式运行
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
